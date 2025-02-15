@@ -1,0 +1,22 @@
+# This sets the base image to ubuntu, meaning the container will be built on top of an Ubuntu operating system.
+FROM ubuntu
+
+# This sets /app as the working directory inside the container.
+WORKDIR /app
+
+# Copy Files into the Container
+COPY requirements.txt /app
+COPY devops /app
+
+# Install Dependencies
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
+    pip install -r requirements.txt && \
+    cd devops
+
+
+# This starts a Django development server that listens on all available network interfaces (0.0.0.0) on port 8000.
+
+
+ENTRYPOINT ["python3"]
+CMD ["manage.py", "runserver", "0.0.0.0:8000"]
