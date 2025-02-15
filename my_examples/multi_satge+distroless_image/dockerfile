@@ -1,0 +1,21 @@
+# --- Stage 1: Install dependencies ---
+FROM python:3.9 AS builder
+WORKDIR /app
+
+# Copy and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt -t /app/dependencies
+
+# --- Stage 2: Use Distroless for execution ---
+FROM gcr.io/distroless/python3
+WORKDIR /app
+
+# Copy only necessary files from builder stage
+COPY --from=builder /app/dependencies /app/dependencies
+COPY app.py /app
+
+# Expose port 5000
+EXPOSE 5000
+
+# Run the Flask app
+CMD ["app.py"]
