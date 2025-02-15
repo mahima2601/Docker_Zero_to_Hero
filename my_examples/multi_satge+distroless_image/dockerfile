@@ -17,5 +17,8 @@ COPY app.py /app
 # Expose port 5000
 EXPOSE 5000
 
+# Ensure Python finds the dependencies
+ENV PYTHONPATH="/app/dependencies"
+
 # Run the Flask app
-CMD ["app.py"]
+CMD ["/usr/bin/python3", "/app/app.py"]
